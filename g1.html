@@ -1,10 +1,9 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Travel Blog Modern — Upload</title>
-
   <style>
     /* Reset & fonts */
     * { box-sizing: border-box; margin:0; padding:0; font-family: "Poppins", Arial, sans-serif; }
@@ -99,10 +98,7 @@
     footer { text-align:center; padding:18px; color:#ddd; background:#171717; margin-top:40px; }
   </style>
 </head>
-
 <body>
-
-  <!-- TOP NAV -->
   <nav class="topbar">
     <div class="brand">
       <img id="topPreview" src="" alt="Uploaded preview">
@@ -111,56 +107,33 @@
         <p style="margin-top:4px;font-size:0.85rem;color:#ddd;">Discover My Adventures & Stories</p>
       </div>
     </div>
-
     <div class="upload-controls">
-      <!-- file input (styled) -->
-      <label class="file-input btn secondary" title="Choose photo">
-        Choose photo
-        <input id="fileInput" type="file" accept="image/*">
-      </label>
-
-      <!-- real upload button -->
-      <button id="uploadBtn" class="btn">Upload</button>
-
-      <!-- optional clear / remove -->
-      <button id="clearBtn" class="btn secondary" title="Clear preview">Clear</button>
-
-      <span id="status" aria-live="polite"></span>
+      <label class="file-input btn secondary" title="Choose photo">Choose photo <input id="fileInput" type="file" accept="image/*"></label> <button id="uploadBtn" class="btn">Upload</button> <button id="clearBtn" class="btn secondary" title="Clear preview">Clear</button> <span id="status" aria-live="polite"></span>
     </div>
   </nav>
-
-  <!-- HERO -->
   <header class="hero">
     <div class="hero-inner">
-      <h2>My Travel Blog</h2>
-      <p>Discover My Adventures & Stories</p>
-      <!-- show a large preview under hero if uploaded -->
-      <img id="preview" src="" alt="Uploaded preview large">
-    </div>
+    <h2>My Travel Blog</h2>
+    <p>Discover My Adventures & Stories</p><img id="preview" src="" alt="Uploaded preview large"></div>
   </header>
-
-  <!-- MAIN -->
   <div class="container">
     <section class="post-card">
       <h3>Exploring Ella, Sri Lanka</h3>
       <p>Ella is one of the most beautiful and peaceful places in Sri Lanka. With stunning mountain views, waterfalls, and cool weather, it's a paradise for travelers.</p>
     </section>
-
     <section class="gallery">
       <h3 style="color:#fff;">Photo Gallery</h3>
       <div class="grid" id="galleryGrid">
-        <!-- uploaded images will be appended here -->
-        <div class="cell"><img src="https://via.placeholder.com/350x200?text=Photo+1" alt=""></div>
-        <div class="cell"><img src="https://via.placeholder.com/350x200?text=Photo+2" alt=""></div>
-        <div class="cell"><img src="https://via.placeholder.com/350x200?text=Photo+3" alt=""></div>
-        <div class="cell"><img src="https://via.placeholder.com/350x200?text=Photo+4" alt=""></div>
+        <div class="cell"><img src="https://via.placeholder.com/350x200?text=Photo+1" alt="350x200"></div>
+        <div class="cell"><img src="https://via.placeholder.com/350x200?text=Photo+2" alt="350x200"></div>
+        <div class="cell"><img src="https://via.placeholder.com/350x200?text=Photo+3" alt="350x200"></div>
+        <div class="cell"><img src="https://via.placeholder.com/350x200?text=Photo+4" alt="350x200"></div>
       </div>
     </section>
   </div>
-
-  <footer>© 2025 My Travel Blog</footer>
-
-  <!-- Firebase + upload script -->
+  <footer>
+    © 2025 My Travel Blog
+  </footer>
   <script type="module">
     // Firebase SDK imports
     import { initializeApp } from "https://www.gstatic.com/firebasejs/12.6.0/firebase-app.js";
@@ -265,6 +238,5 @@
       }
     });
   </script>
-
 </body>
 </html>
