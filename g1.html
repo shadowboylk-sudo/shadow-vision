@@ -30,7 +30,7 @@ async function uploadImage() {
 
     // Replace with your values ↓↓↓
     formData.append("upload_preset", "unsigned_preset"); 
-    const cloudName = "YOUR_CLOUD_NAME_HERE";
+    const cloudName = "dwy3bwejx";
 
     const res = await fetch(`https://api.cloudinary.com/v1_1/${cloudName}/image/upload`, {
         method: "POST",
@@ -47,3 +47,4 @@ async function uploadImage() {
 
 </body>
 </html>
+
