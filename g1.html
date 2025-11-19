@@ -1,9 +1,9 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<meta charset="UTF-8">
-<title>Travel Blog</title>
-<style>
+  <meta charset="UTF-8">
+  <title>Travel Blog</title>
+  <style>
     body {
         background: #0e0e0e;
         color: white;
@@ -37,33 +37,26 @@
         cursor: pointer;
         margin: 10px;
     }
-</style>
+  </style>
 </head>
 <body>
+  <h1>My Travel Blog</h1><input type="file" id="fileInput"> <button class="btn" onclick="uploadImage()">Upload</button><br>
+  <img id="preview" alt="">
+  <h2>Photo Gallery</h2>
+  <div class="gallery" id="gallery"></div>
+  <script>
+  // Cloudinary info
+  const cloudName = "dwy3bwejx";
+  const uploadPreset = "my_preset";
 
-<h1>My Travel Blog</h1>
-
-<input type="file" id="fileInput">
-<button class="btn" onclick="uploadImage()">Upload</button>
-<br>
-<img id="preview">
-
-<h2>Photo Gallery</h2>
-<div class="gallery" id="gallery"></div>
-
-<script>
-// Cloudinary info
-const cloudName = "dwy3bwejx";
-const uploadPreset = "my_preset";
-
-// When selecting a file -> preview it
-document.getElementById("fileInput").addEventListener("change", function(){
+  // When selecting a file -> preview it
+  document.getElementById("fileInput").addEventListener("change", function(){
     const file = this.files[0];
     document.getElementById("preview").src = URL.createObjectURL(file);
-});
+  });
 
-// Upload to Cloudinary
-async function uploadImage() {
+  // Upload to Cloudinary
+  async function uploadImage() {
     const file = document.getElementById("fileInput").files[0];
     if (!file) return alert("Please select a photo!");
 
@@ -84,16 +77,15 @@ async function uploadImage() {
     } else {
         alert("Upload failed!");
     }
-}
+  }
 
-// Add uploaded image to gallery
-function addToGallery(url) {
+  // Add uploaded image to gallery
+  function addToGallery(url) {
     const gallery = document.getElementById("gallery");
     const img = document.createElement("img");
     img.src = url;
     gallery.appendChild(img);
-}
-</script>
-
+  }
+  </script>
 </body>
 </html>
