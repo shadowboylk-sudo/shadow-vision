@@ -1,6 +1,5 @@
 <!DOCTYPE html>
 <html lang="en">
-  
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
@@ -9,31 +8,52 @@
 
   <style>
     body {
-        display: flex;
-        justify-content: center;
-        align-items: center;
-        height: 100vh;
         background: #111;
+        color: white;
+        font-family: Arial, sans-serif;
+        padding: 20px;
     }
     img {
         max-width: 90%;
-        max-height: 90%;
         border-radius: 12px;
         box-shadow: 0 0 20px rgba(255,255,255,0.4);
+        margin-top: 15px;
     }
-</style>
+    #uploadBox {
+        margin: 20px 0;
+        padding: 15px;
+        background: #222;
+        border-radius: 10px;
+    }
+    button {
+        padding: 10px 20px;
+        background: #ff0066;
+        border: none;
+        border-radius: 6px;
+        color: white;
+        cursor: pointer;
+        margin-top: 10px;
+    }
+  </style>
 </head>
 
-
-  
 <body>
 
-  <img id="myImage" src="storage-69547.firebasestorage.app" alt="Uploaded Photo">
+<h1>My Travel Blog</h1>
+<p>Discover My Adventures & Stories</p>
 
-<header>
-  <h1>My Travel Blog</h1>
-  <p>Discover My Adventures & Stories</p>
-</header>
+<!-- 🔥 Upload Section -->
+<div id="uploadBox">
+    <h3>Upload Your Photo</h3>
+    <input type="file" id="fileInput" />
+    <br>
+    <button onclick="uploadFile()">Upload</button>
+    <p id="status"></p>
+
+    <!-- Uploaded Image Preview -->
+    <img id="preview" style="display:none;" />
+</div>
+
 <!-- Firebase Upload Script -->
 <script type="module">
   import { initializeApp } from "https://www.gstatic.com/firebasejs/12.6.0/firebase-app.js";
@@ -53,6 +73,7 @@
   const app = initializeApp(firebaseConfig);
   const storage = getStorage(app);
 
+  // 🔥 Upload Function
   window.uploadFile = function () {
     const file = document.getElementById("fileInput").files[0];
     if (!file) {
@@ -62,36 +83,21 @@
 
     const storageRef = ref(storage, "uploads/" + file.name);
 
-    uploadBytes(storageRef, file).then(snapshot => {
-      document.getElementById("status").innerText = "Uploaded!";
-      return getDownloadURL(snapshot.ref);
-    }).then(url => {
-      document.getElementById("preview").src = url;
-      document.getElementById("preview").style.display = "block";
-      document.getElementById("status").innerText = "File URL: " + url;
-    }).catch(error => {
-      document.getElementById("status").innerText = "Error: " + error;
-    });
+    uploadBytes(storageRef, file)
+      .then(snapshot => {
+        document.getElementById("status").innerText = "Uploaded! Getting URL...";
+        return getDownloadURL(snapshot.ref);
+      })
+      .then(url => {
+        document.getElementById("preview").src = url;
+        document.getElementById("preview").style.display = "block";
+        document.getElementById("status").innerHTML = "File URL:<br><a href='" + url + "'>" + url + "</a>";
+      })
+      .catch(error => {
+        document.getElementById("status").innerText = "Error: " + error;
+      });
   }
 </script>
-
-<div class="container">
-  <section class="post-card">
-    <h2>Exploring Ella, Sri Lanka</h2>
-    <p>Ella is one of the most beautiful and peaceful places in Sri Lanka. With stunning mountain views, waterfalls, and cool weather, it's a paradise for travelers.</p>
-    <img src="https://via.placeholder.com/800x400" alt="Ella View" />
-  </section>
-
-  <section class="gallery">
-    <h2>Photo Gallery</h2>
-    <div class="grid">
-      <img src="https://via.placeholder.com/250" />
-      <img src="https://via.placeholder.com/250" />
-      <img src="https://via.placeholder.com/250" />
-      <img src="https://via.placeholder.com/250" />
-    </div>
-  </section>
-</div>
 
 <footer>
   © 2025 My Travel Blog
@@ -99,44 +105,3 @@
 
 </body>
 </html>
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-     
-
-
-
-
-
-
