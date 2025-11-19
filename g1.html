@@ -57,6 +57,46 @@
   <h1>My Travel Blog</h1>
   <p>Discover My Adventures & Stories</p>
 </header>
+<!-- Firebase Upload Script -->
+<script type="module">
+  import { initializeApp } from "https://www.gstatic.com/firebasejs/12.6.0/firebase-app.js";
+  import { getStorage, ref, uploadBytes, getDownloadURL } 
+    from "https://www.gstatic.com/firebasejs/12.6.0/firebase-storage.js";
+
+  const firebaseConfig = {
+    apiKey: "AIzaSyC83BuHC073-tAGSSPvPlRs904UrCMEeT0",
+    authDomain: "storage-69547.firebaseapp.com",
+    projectId: "storage-69547",
+    storageBucket: "storage-69547.appspot.com",
+    messagingSenderId: "122473493114",
+    appId: "1:122473493114:web:972c94c342fee94dde35ad3",
+    measurementId: "G-ZVP1JSPRRC"
+  };
+
+  const app = initializeApp(firebaseConfig);
+  const storage = getStorage(app);
+
+  window.uploadFile = function () {
+    const file = document.getElementById("fileInput").files[0];
+    if (!file) {
+      alert("Select a file first!");
+      return;
+    }
+
+    const storageRef = ref(storage, "uploads/" + file.name);
+
+    uploadBytes(storageRef, file).then(snapshot => {
+      document.getElementById("status").innerText = "Uploaded!";
+      return getDownloadURL(snapshot.ref);
+    }).then(url => {
+      document.getElementById("preview").src = url;
+      document.getElementById("preview").style.display = "block";
+      document.getElementById("status").innerText = "File URL: " + url;
+    }).catch(error => {
+      document.getElementById("status").innerText = "Error: " + error;
+    });
+  }
+</script>
 
 <div class="container">
   <section class="post-card">
@@ -117,6 +157,7 @@
 
 
      
+
 
 
 
