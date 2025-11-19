@@ -1,107 +1,104 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Travel Blog Modern</title>
-  <link rel="stylesheet" type="text/css" href="g1.css"> 
+  <link rel="stylesheet" type="text/css" href="g1.css">
 
   <style>
     body {
-        background: #111;
-        color: white;
-        font-family: Arial, sans-serif;
-        padding: 20px;
+      background: #111;
+      color: white;
+      font-family: Arial, sans-serif;
+      margin: 0;
+      padding: 0;
     }
-    img {
-        max-width: 90%;
-        border-radius: 12px;
-        box-shadow: 0 0 20px rgba(255,255,255,0.4);
-        margin-top: 15px;
+
+    #preview {
+      max-width: 300px;
+      border-radius: 10px;
+      margin-top: 10px;
+      display: none;
     }
+
     #uploadBox {
-        margin: 20px 0;
-        padding: 15px;
-        background: #222;
-        border-radius: 10px;
+      margin: 20px;
+      padding: 15px;
+      background: #222;
+      border-radius: 8px;
+      width: 350px;
     }
+
     button {
-        padding: 10px 20px;
-        background: #ff0066;
-        border: none;
-        border-radius: 6px;
-        color: white;
-        cursor: pointer;
-        margin-top: 10px;
+      padding: 10px 15px;
+      border: none;
+      background: #ff0055;
+      color: white;
+      border-radius: 5px;
+      cursor: pointer;
     }
   </style>
 </head>
 
 <body>
 
-<h1>My Travel Blog</h1>
-<p>Discover My Adventures & Stories</p>
-
-<!-- 🔥 Upload Section -->
-<div id="uploadBox">
+  <!-- Upload Box UI -->
+  <div id="uploadBox">
     <h3>Upload Your Photo</h3>
-    <input type="file" id="fileInput" />
-    <br>
+    <input type="file" id="fileInput">
+    <br><br>
     <button onclick="uploadFile()">Upload</button>
     <p id="status"></p>
+    <img id="preview">
+  </div>
 
-    <!-- Uploaded Image Preview -->
-    <img id="preview" style="display:none;" />
-</div>
+  <header>
+    <h1>My Travel Blog</h1>
+    <p>Discover My Adventures & Stories</p>
+  </header>
 
-<!-- Firebase Upload Script -->
-<script type="module">
-  import { initializeApp } from "https://www.gstatic.com/firebasejs/12.6.0/firebase-app.js";
-  import { getStorage, ref, uploadBytes, getDownloadURL } 
-    from "https://www.gstatic.com/firebasejs/12.6.0/firebase-storage.js";
+  <!-- Firebase Upload System -->
+  <script type="module">
+    import { initializeApp } from "https://www.gstatic.com/firebasejs/12.6.0/firebase-app.js";
+    import { getStorage, ref, uploadBytes, getDownloadURL }
+      from "https://www.gstatic.com/firebasejs/12.6.0/firebase-storage.js";
 
-  const firebaseConfig = {
-    apiKey: "AIzaSyC83BuHC073-tAGSSPvPlRs904UrCMEeT0",
-    authDomain: "storage-69547.firebaseapp.com",
-    projectId: "storage-69547",
-    storageBucket: "storage-69547.appspot.com",
-    messagingSenderId: "122473493114",
-    appId: "1:122473493114:web:972c94c342fee94dde35ad3",
-    measurementId: "G-ZVP1JSPRRC"
-  };
+    const firebaseConfig = {
+      apiKey: "AIzaSyC83BuHC073-tAGSSPvPlRs904UrCMEeT0",
+      authDomain: "storage-69547.firebaseapp.com",
+      projectId: "storage-69547",
+      storageBucket: "storage-69547.appspot.com",
+      messagingSenderId: "122473493114",
+      appId: "1:122473493114:web:972c94c342fee94dde35ad3",
+      measurementId: "G-ZVP1JSPRRC"
+    };
 
-  const app = initializeApp(firebaseConfig);
-  const storage = getStorage(app);
+    const app = initializeApp(firebaseConfig);
+    const storage = getStorage(app);
 
-  // 🔥 Upload Function
-  window.uploadFile = function () {
-    const file = document.getElementById("fileInput").files[0];
-    if (!file) {
-      alert("Select a file first!");
-      return;
-    }
+    window.uploadFile = function () {
+      const file = document.getElementById("fileInput").files[0];
+      if (!file) {
+        alert("Select a file first!");
+        return;
+      }
 
-    const storageRef = ref(storage, "uploads/" + file.name);
+      const storageRef = ref(storage, "uploads/" + file.name);
 
-    uploadBytes(storageRef, file)
-      .then(snapshot => {
-        document.getElementById("status").innerText = "Uploaded! Getting URL...";
+      uploadBytes(storageRef, file).then(snapshot => {
+        document.getElementById("status").innerText = "Uploaded!";
         return getDownloadURL(snapshot.ref);
-      })
-      .then(url => {
+      }).then(url => {
         document.getElementById("preview").src = url;
         document.getElementById("preview").style.display = "block";
-        document.getElementById("status").innerHTML = "File URL:<br><a href='" + url + "'>" + url + "</a>";
-      })
-      .catch(error => {
+        document.getElementById("status").innerText = "File URL: " + url;
+      }).catch(error => {
         document.getElementById("status").innerText = "Error: " + error;
       });
-  }
-</script>
-
-<footer>
-  © 2025 My Travel Blog
-</footer>
+    }
+  </script>
 
 </body>
 </html>
