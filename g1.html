@@ -1,10 +1,9 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<meta charset="UTF-8">
-<title>Travel Blog</title>
-
-<style>
+  <meta charset="UTF-8">
+  <title>Travel Blog</title>
+  <style>
     body {
         background: #0e0e0e;
         color: white;
@@ -38,38 +37,29 @@
         color: white;
         cursor: pointer;
     }
-</style>
+  </style>
 </head>
-
 <body>
+  <h1>My Travel Blog</h1><input type="file" id="fileInput"> <button class="btn" onclick="uploadImage()">Upload</button><br>
+  <img id="preview" alt="">
+  <h2>Photo Gallery</h2>
+  <div class="gallery" id="gallery"></div>
+  <script>
 
-<h1>My Travel Blog</h1>
+  // CLOUDINARY INFO
+  const cloudName = "dwy3bwejx";
+  const uploadPreset = "storage-g1";
+  const folderName = "g1photo";
 
-<input type="file" id="fileInput">
-<button class="btn" onclick="uploadImage()">Upload</button>
-
-<br>
-<img id="preview">
-
-<h2>Photo Gallery</h2>
-<div class="gallery" id="gallery"></div>
-
-<script>
-
-// CLOUDINARY INFO
-const cloudName = "dwy3bwejx";
-const uploadPreset = "storage-g1";
-const folderName = "g1photo";
-
-document.getElementById("fileInput").addEventListener("change", function(){
+  document.getElementById("fileInput").addEventListener("change", function(){
     const file = this.files[0];
     document.getElementById("preview").src = URL.createObjectURL(file);
-});
+  });
 
-// ===========================================
-// UPLOAD TO CLOUDINARY
-// ===========================================
-async function uploadImage() {
+  // ===========================================
+  // UPLOAD TO CLOUDINARY
+  // ===========================================
+  async function uploadImage() {
     const file = document.getElementById("fileInput").files[0];
     if (!file) return alert("Please select a photo!");
 
@@ -91,12 +81,12 @@ async function uploadImage() {
     } else {
         alert("Upload Failed!");
     }
-}
+  }
 
-// ===========================================
-// FETCH ALL IMAGES FROM CLOUDINARY FOLDER
-// ===========================================
-async function loadGallery() {
+  // ===========================================
+  // FETCH ALL IMAGES FROM CLOUDINARY FOLDER
+  // ===========================================
+  async function loadGallery() {
 
     const url = `https://res.cloudinary.com/${cloudName}/image/list/${folderName}.json`;
 
@@ -116,12 +106,11 @@ async function loadGallery() {
     } catch (e) {
         console.log("Error loading gallery:", e);
     }
-}
+  }
 
-// Load gallery when site loads
-window.onload = loadGallery;
+  // Load gallery when site loads
+  window.onload = loadGallery;
 
-</script>
-
+  </script>
 </body>
 </html>
