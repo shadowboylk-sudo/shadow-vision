@@ -40,36 +40,28 @@
   </style>
 </head>
 <body>
-
-  <h1>My Travel Blog</h1>
-
-  <input type="file" id="fileInput">
-  <button class="btn" onclick="uploadImage()">Upload</button>
-
-  <img id="preview" alt="">
-
+  <h1>My Travel Blog</h1><input type="file" id="fileInput"> <button class="btn" onclick="uploadImage()">Upload</button> <img id="preview" alt="">
   <h2>Photo Gallery</h2>
   <div class="gallery" id="gallery"></div>
+  <script>
 
-<script>
+  // -----------------------------
+  // CLOUDINARY CONFIG
+  // -----------------------------
+  const cloudName = "dwy3bwejx";
+  const uploadPreset = "storage-g1";
+  const folderName = "g1photo";
 
-// -----------------------------
-// CLOUDINARY CONFIG
-// -----------------------------
-const cloudName = "dwy3bwejx";
-const uploadPreset = "storage-g1";
-const folderName = "g1photo";
-
-// Preview image
-document.getElementById("fileInput").addEventListener("change", function(){
+  // Preview image
+  document.getElementById("fileInput").addEventListener("change", function(){
     const file = this.files[0];
     document.getElementById("preview").src = URL.createObjectURL(file);
-});
+  });
 
-// -----------------------------
-// UPLOAD IMAGE
-// -----------------------------
-async function uploadImage() {
+  // -----------------------------
+  // UPLOAD IMAGE
+  // -----------------------------
+  async function uploadImage() {
     const file = document.getElementById("fileInput").files[0];
     if (!file) return alert("Select a photo!");
 
@@ -91,12 +83,12 @@ async function uploadImage() {
     } else {
         alert("Upload Failed!");
     }
-}
+  }
 
-// -----------------------------
-// LOAD GALLERY USING CLOUDINARY SEARCH API
-// -----------------------------
-async function loadGallery() {
+  // -----------------------------
+  // LOAD GALLERY USING CLOUDINARY SEARCH API
+  // -----------------------------
+  async function loadGallery() {
 
     const cloudinarySearchURL =
       `https://api.cloudinary.com/v1_1/${cloudName}/resources/search`;
@@ -119,11 +111,11 @@ async function loadGallery() {
         image.src = img.secure_url;
         gallery.appendChild(image);
     });
-}
+  }
 
-// Load gallery on start
-window.onload = loadGallery;
+  // Load gallery on start
+  window.onload = loadGallery;
 
-</script>
+  </script>
 </body>
 </html>
