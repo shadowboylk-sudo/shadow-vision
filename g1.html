@@ -45,7 +45,6 @@
 
   <input type="file" id="fileInput">
   <button class="btn" onclick="uploadImage()">Upload</button>
-  <br>
 
   <img id="preview" alt="">
 
@@ -54,21 +53,25 @@
 
 <script>
 
-  // ================================
-  // CLOUDINARY
-  // ================================
-  const cloudName = "dwy3bwejx";
-  const uploadPreset = "storage-g1";
-  const folderName = "g1photo";
+// -----------------------------
+// CLOUDINARY CONFIG
+// -----------------------------
+const cloudName = "dwy3bwejx";
+const uploadPreset = "storage-g1";
+const folderName = "g1photo";
 
-  document.getElementById("fileInput").addEventListener("change", function(){
+// Preview image
+document.getElementById("fileInput").addEventListener("change", function(){
     const file = this.files[0];
     document.getElementById("preview").src = URL.createObjectURL(file);
-  });
+});
 
-  async function uploadImage() {
+// -----------------------------
+// UPLOAD IMAGE
+// -----------------------------
+async function uploadImage() {
     const file = document.getElementById("fileInput").files[0];
-    if (!file) return alert("Please select a photo!");
+    if (!file) return alert("Select a photo!");
 
     let formData = new FormData();
     formData.append("file", file);
@@ -83,66 +86,44 @@
     const data = await res.json();
 
     if (data.secure_url) {
-        alert("Upload Success!");
-        loadGallery();
-        saveToSheet(data.secure_url);  // <<< SAVE TO GOOGLE SHEET
+        alert("Upload Successful!");
+        loadGallery();  
     } else {
         alert("Upload Failed!");
     }
-  }
+}
 
-  // ================================
-  // LOAD CLOUDINARY GALLERY
-  // ================================
-  async function loadGallery() {
-    const url = `https://res.cloudinary.com/${cloudName}/image/list/${folderName}.json`;
+// -----------------------------
+// LOAD GALLERY USING CLOUDINARY SEARCH API
+// -----------------------------
+async function loadGallery() {
 
-    try {
-        const res = await fetch(url);
-        const data = await res.json();
+    const cloudinarySearchURL =
+      `https://api.cloudinary.com/v1_1/${cloudName}/resources/search`;
 
-        const gallery = document.getElementById("gallery");
-        gallery.innerHTML = "";
-
-        data.resources.forEach(img => {
-            const image = document.createElement("img");
-            image.src = img.secure_url;
-            gallery.appendChild(image);
-        });
-
-    } catch (e) {
-        console.log("Error loading gallery:", e);
-    }
-  }
-
-  window.onload = loadGallery;
-
-  // ================================
-  // GOOGLE SHEET API
-  // ================================
-  const API_KEY = "AIzaSyCkbHTLv56mgdpqru3k9Fg7CmpL4MPKCIQ";
-  const SHEET_ID = "1r1t5ssG2FbcNXAiEr2dUK6UE99idQvyKa4h5d64B19o";
-
-  // ADD IMAGE URL TO GOOGLE SHEET
-  async function saveToSheet(imageURL) {
-
-    const endpoint =
-      `https://sheets.googleapis.com/v4/spreadsheets/${SHEET_ID}/values/Sheet1!A1:append?valueInputOption=USER_ENTERED&key=${API_KEY}`;
-
-    const body = {
-      values: [[imageURL]]
-    };
-
-    await fetch(endpoint, {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify(body)
+    const res = await fetch(cloudinarySearchURL, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+            expression: `folder:${folderName}/*`
+        })
     });
 
-    console.log("Saved to Google Sheet:", imageURL);
-  }
+    const data = await res.json();
+
+    const gallery = document.getElementById("gallery");
+    gallery.innerHTML = "";
+
+    data.resources.forEach(img => {
+        const image = document.createElement("img");
+        image.src = img.secure_url;
+        gallery.appendChild(image);
+    });
+}
+
+// Load gallery on start
+window.onload = loadGallery;
 
 </script>
-
 </body>
 </html>
