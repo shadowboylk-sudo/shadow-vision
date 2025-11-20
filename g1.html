@@ -40,13 +40,23 @@
   </style>
 </head>
 <body>
-  <h1>My Travel Blog</h1><input type="file" id="fileInput"> <button class="btn" onclick="uploadImage()">Upload</button><br>
+
+  <h1>My Travel Blog</h1>
+
+  <input type="file" id="fileInput">
+  <button class="btn" onclick="uploadImage()">Upload</button>
+  <br>
+
   <img id="preview" alt="">
+
   <h2>Photo Gallery</h2>
   <div class="gallery" id="gallery"></div>
-  <script>
 
-  // CLOUDINARY INFO
+<script>
+
+  // ================================
+  // CLOUDINARY
+  // ================================
   const cloudName = "dwy3bwejx";
   const uploadPreset = "storage-g1";
   const folderName = "g1photo";
@@ -56,9 +66,6 @@
     document.getElementById("preview").src = URL.createObjectURL(file);
   });
 
-  // ===========================================
-  // UPLOAD TO CLOUDINARY
-  // ===========================================
   async function uploadImage() {
     const file = document.getElementById("fileInput").files[0];
     if (!file) return alert("Please select a photo!");
@@ -77,17 +84,17 @@
 
     if (data.secure_url) {
         alert("Upload Success!");
-        loadGallery(); // **REFRESH GALLERY AFTER UPLOAD**
+        loadGallery();
+        saveToSheet(data.secure_url);  // <<< SAVE TO GOOGLE SHEET
     } else {
         alert("Upload Failed!");
     }
   }
 
-  // ===========================================
-  // FETCH ALL IMAGES FROM CLOUDINARY FOLDER
-  // ===========================================
+  // ================================
+  // LOAD CLOUDINARY GALLERY
+  // ================================
   async function loadGallery() {
-
     const url = `https://res.cloudinary.com/${cloudName}/image/list/${folderName}.json`;
 
     try {
@@ -95,7 +102,7 @@
         const data = await res.json();
 
         const gallery = document.getElementById("gallery");
-        gallery.innerHTML = ""; // clear before loading
+        gallery.innerHTML = "";
 
         data.resources.forEach(img => {
             const image = document.createElement("img");
@@ -108,9 +115,34 @@
     }
   }
 
-  // Load gallery when site loads
   window.onload = loadGallery;
 
-  </script>
+  // ================================
+  // GOOGLE SHEET API
+  // ================================
+  const API_KEY = "AIzaSyCkbHTLv56mgdpqru3k9Fg7CmpL4MPKCIQ";
+  const SHEET_ID = "1r1t5ssG2FbcNXAiEr2dUK6UE99idQvyKa4h5d64B19o";
+
+  // ADD IMAGE URL TO GOOGLE SHEET
+  async function saveToSheet(imageURL) {
+
+    const endpoint =
+      `https://sheets.googleapis.com/v4/spreadsheets/${SHEET_ID}/values/Sheet1!A1:append?valueInputOption=USER_ENTERED&key=${API_KEY}`;
+
+    const body = {
+      values: [[imageURL]]
+    };
+
+    await fetch(endpoint, {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify(body)
+    });
+
+    console.log("Saved to Google Sheet:", imageURL);
+  }
+
+</script>
+
 </body>
 </html>
